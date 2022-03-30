@@ -194,7 +194,29 @@ def carritocompras():
     newWindow5.geometry("500x500") 
     Label(newWindow5,text ="Productos seleccionados").pack() 
     Label(newWindow5, text="").pack()
+#Ventana de carrito de compras2 
+def carritocompras2(): 
+    newWindow6 = Toplevel(root)
+    newWindow6.title("Carrito de compras")
+    newWindow6.geometry("500x500")
+    Label(newWindow6,text="Seleccione la cantidad").place(x=10,y=20)
+    Label(newWindow6,text="El total es").place(x=30,y=90)
+    Label(newWindow6,text="").pack()
+    btn = Button(newWindow6,text="Pago con tarjeta",command=tarjeta).place(x=200,y=200)
+    btn = Button(newWindow6,text="Pago en efectivo",command=efectivo).place(x=200,y=240)
 
+def tarjeta(): 
+    newWindow7 = Toplevel(root)
+    newWindow7.title("Carrito de compras")
+    newWindow7.geometry("500x500")
+    Label(newWindow7,text="Seleccione la cantidad").place(x=10,y=20)
+    Label(newWindow7,text="El total es",).place(x=30,y=90)
+
+def efectivo(): 
+    newWindow9 = Toplevel(root)
+    newWindow9.title("Carrito de compras")
+    newWindow9.geometry("500x500")
+    Label(newWindow9,text="El total es",).place(x=30,y=90)
 #Ventana de Quienes somos
 def lema(): 
     newWindow6 = Toplevel(root) 
