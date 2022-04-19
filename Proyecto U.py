@@ -11,7 +11,7 @@ root.geometry('600x500')
 root.title("PCgamersbuild.com") 
 frame = Frame(root)
 frame.pack()
-frame.config(bg="LightBlue4") 
+frame.config(bg="plum4") 
 frame.config(width=600,height=600)   
 #Inventario
 menubar = Menu(root)
@@ -240,9 +240,10 @@ def componentes():
     global frame8
     frame8 = Frame(newWindow4)
     frame8.grid(row=1,column=3)
+    
 
     Label(frame1,text="Procesador").pack()
-
+    
     for procesador in procesadoresAMDryzen:
         ck=ttk.Checkbutton(frame1,text=procesador,variable=controlVars1[(procesador) + str(Recorredor1)],onvalue=1,offvalue=0).pack()
     for procesadorI in procesadoresIntel:
@@ -338,6 +339,16 @@ def calculo():
             Label(newWindow6,text=( str(b) + "=" + str(valor8))).pack()
             total += valor8
     Label(newWindow6,text=("Total = " + str(total))).place(x=100,y=200)
+def computadorasarmadas():
+    newWindow10 = Toplevel(root)
+    newWindow10.title('Comptadoras Prearmadas')
+    newWindow10.geometry("1000x1000")
+    #frame10= Frame(newWindow10)
+    #frame10.grid(row=1,column=2)
+    for computador in Computadoras:
+    
+        ttk.Checkbutton(newWindow10,text=computador,variable=controlVars[(computador) + str(Recorredor)],onvalue=1,offvalue=0).pack()
+    Button(newWindow10,text="Click para agregar calcular el costo de su producto",command=calculo).pack()
 
 #Ventana de carrito de compras2 
 def carritocompras2(): 
@@ -370,7 +381,7 @@ def lema():
 
 #Menus principal
 filemenu = Menu(menubar,tearoff=0)
-filemenu.add_command(label="Computadoras Armadas",command=Computadoras)
+filemenu.add_command(label="Computadoras Armadas",command=computadorasarmadas)
 filemenu.add_command(label="Contacto y Ubicacion",command=ubicacion)
 filemenu.add_separator()
 filemenu.add_command(label="Salir", command=root.quit)
@@ -380,4 +391,3 @@ menubar.add_cascade(label="Menu",menu=filemenu)
 menubar.add_cascade(label="Componentes",command=componentes)
 menubar.add_cascade(label="Quienes Somos", command=lema)
 root.mainloop()
-
