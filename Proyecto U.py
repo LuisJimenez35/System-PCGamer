@@ -1,18 +1,114 @@
+from ast import Break
+from hashlib import new
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 from tkinter.font import BOLD
-
+from tkinter.tix import Tree
 from setuptools import Command
+#Logeo
+def Login():
+    ventana_login = Toplevel(root)
+    ventana_login.title("Ventana Login")
+    ventana_login.geometry("300x250")
+    global verificaUsuario
+    global verificaclave
+    verificaUsuario = StringVar()
+    verificaclave = StringVar()
+    Label(ventana_login,text="Por favor digite usuario").pack()
+    entradausuario = Entry(ventana_login, textvariable=verificaUsuario)
+    entradausuario.pack()
+    Label(ventana_login,text="Por favor digite Clave").pack()
+    entradaclave = Entry(ventana_login, textvariable=verificaclave,show="*")
+    entradaclave.pack()
+    Button(ventana_login,text="Login",command=verifica_login).pack()
+
+dic = {"Rol1":"Moderador",
+    "Rol2":"Usuario"}
+valores = []
+for i,j in dic.items():
+    valores.append(j)
+    
+def Registro():
+    ventana_registro = Toplevel(root)
+    ventana_registro.title("Ventana Registro")
+    ventana_registro.geometry("300x250")
+    global usuarioRegistro
+    global claveRegistro
+    global rolcombo
+    usuarioRegistro = StringVar()
+    claveRegistro = StringVar()
+    rolcombo = StringVar()
+    Label(ventana_registro,text="Por favor digite usuario").pack()
+    entradausuarioRegistro = Entry(ventana_registro,textvariable=usuarioRegistro).pack()
+    Label(ventana_registro,text="Por favor digite Contraseña").pack()
+    entradaclaveRegistro = Entry(ventana_registro,textvariable=claveRegistro).pack()
+    Label(ventana_registro,text="Por favor elija el rol").pack()
+    comboboxRegistro = ttk.Combobox(ventana_registro,textvariable=rolcombo,values=valores)
+    comboboxRegistro.pack()
+    Button(ventana_registro,text="Guardar", command=GuardarREgistro).pack()
+    
+    
+
+usuario = {}
+def GuardarREgistro():
+    datos = []
+    datos.append(claveRegistro.get())
+    datos.append(rolcombo.get())
+    usuario[usuarioRegistro.get()] = datos
+    messagebox.showinfo("","Usuario Registrado")
+    print(usuario)
+
+def verifica_login():
+    global sesionrol,sesionusuario
+    encontro = False
+    sesionusuario = ""
+    sesionrol = ""
+    for clave,valor in usuario.items():
+        if verificaUsuario.get() in clave and verificaclave.get() in valor:
+            sesionusuario = clave
+            sesionrol = valor[1]
+            encontro = True
+            break
+        else:
+            encontro = False
+    if encontro:
+        messagebox.showinfo("","Logeo exitoso")
+        ventanaPanelAdminstrador(sesionusuario,sesionrol)
+    else:
+        messagebox.showerror("","Usuario incorrrecto")
+
+#Ventana
+def ventanaPanelAdminstrador(dato1,dato2):
+    ventananueva = Tk()
+    saludo = "Ventana de Moderacion"
+    Label(ventananueva,text=saludo).pack()
+    if dato2 == "Moderador":
+        Label(ventananueva,text="Bienvenido Moderador").pack()
+        Button(ventananueva,text="¡Registro de Inventario!",width="30",height="3",bg="Gray",command=registrodeInventario).pack()
+        Button(ventananueva,text="¡Configuracion!",width="30",height="3",bg="Gray").pack()
+    else:
+        Label(ventananueva,text="Logeo Exitoso").pack()
+        Button(ventananueva,text="¡Volver a inicio!",width="30",height="3",bg="Gray").pack()  
+
+
 
 
 # Configuración de la raíz
+def principal():
+    global root
 root = Tk()
 root.geometry('600x500')
 root.title("PCgamersbuild.com") 
 frame = Frame(root)
 frame.pack()
-frame.config(bg="plum4") 
-frame.config(width=600,height=600)   
+frame.config(bg="LightBlue4") 
+frame.config(width=600,height=600)
+boton = Button(text="¡Iniciar Sesion!",width="15",height="2",bg="Gray",command=Login)
+boton.place(x=450, y=30)   
+btr =Button(root,text="¡Registrarse!",width="15",height="2",bg="Gray",command=Registro)
+btr.place(x=450, y=80) 
+
 #Inventario
 menubar = Menu(root)
 root.config(menu=menubar)
@@ -26,7 +122,7 @@ Computadoras = {"Eco PC":115000,
 "Futurist PC":1030000,}
 procesadoresAMDryzen = {"AMD ryzen 3 pro 4133G" : 110500, 
 "AMD ryzen 5 pro 4566" : 140000,
-"AMD ryzen 5 3600" : 155000,
+"AMD ryzen 5 3600    " : 155000,
 "AMD ryzen 7 5700G" : 170000, 
 "AMD ryzen 9 5950X" : 200000}
 procesadoresIntel = {"INTEL PENTIUM GOLD G6400": 52000, 
@@ -100,7 +196,6 @@ cases = {"AEROCOOL SPLIT TG RGB" : 24000,
 "LIAN LI LANCOOL 215X- NEGRO" : 62000,
 "NZXT H510 ELITE - NEGRO" : 89125}
 
-
 controlVars ={"Eco PC":IntVar(), 
 "Eco PC 2.0":IntVar(),
 "Baby rock PC":IntVar(),
@@ -111,7 +206,7 @@ controlVars ={"Eco PC":IntVar(),
 "Futurist PC":IntVar(),}
 controlVars1 = {"AMD ryzen 3 pro 4133G" : IntVar(), 
 "AMD ryzen 5 pro 4566" : IntVar(),
-"AMD ryzen 5 3600" : IntVar(),
+"AMD ryzen 5 3600    " : IntVar(),
 "AMD ryzen 7 5700G" : IntVar(), 
 "AMD ryzen 9 5950X" : IntVar()}
 controlVars2 = {"INTEL PENTIUM GOLD G6400": IntVar(), 
@@ -185,6 +280,7 @@ controlVars8 = {"AEROCOOL SPLIT TG RGB" : IntVar(),
 "LIAN LI LANCOOL 215X- NEGRO" : IntVar(),
 "NZXT H510 ELITE - NEGRO" : IntVar()}
 
+
 Productos = []
 
 Recorredor = ""
@@ -205,7 +301,7 @@ def APB():
     Label(newWindow1, text="").pack()
     combo = ttk.Combobox(newWindow1,state="readonly",values=Computadoras)
     combo.pack()
-
+    
 #Ventana de de Contacto
 def ubicacion(): 
     newWindow2 = Toplevel(root) 
@@ -215,6 +311,7 @@ def ubicacion():
     Label(newWindow2, text="").pack()
     Label(newWindow2, text="www.").pack()
     Label(newWindow2, text="506 ***********").pack()
+
 
 #Ventana de Componentes
 
@@ -237,17 +334,16 @@ def componentes():
     frame6.grid(row=1,column=1)
     frame7 = Frame(newWindow4)
     frame7.grid(row=1,column=2)
-    global frame8
     frame8 = Frame(newWindow4)
     frame8.grid(row=1,column=3)
     
 
     Label(frame1,text="Procesador").pack()
-    
+
     for procesador in procesadoresAMDryzen:
-        ck=ttk.Checkbutton(frame1,text=procesador,variable=controlVars1[(procesador) + str(Recorredor1)],onvalue=1,offvalue=0).pack()
+        ttk.Checkbutton(frame1,text=procesador,variable=controlVars1[(procesador) + str(Recorredor1)],onvalue=1,offvalue=0).pack()
     for procesadorI in procesadoresIntel:
-        ttk.Checkbutton(frame1,text=procesadorI,variable=controlVars2[(procesadorI) + str(Recorredor2)],onvalue=1,offvalue=0).pack()
+        ttk.Checkbutton(frame1,text=procesadorI,variable=controlVars2[(procesadorI) + str(Recorredor2)],onvalue=1,offvalue=0).pack(padx=9)
 
     Label(frame2,text="Targetas madre").pack()
     for tarjetas in tarjetamother:
@@ -258,13 +354,13 @@ def componentes():
         ttk.Checkbutton(frame3,text=tagetasR,variable=controlVars4[(tagetasR) + str(Recorredor4)],onvalue=1,offvalue=0).pack()
 
 
-    Label(frame4,text="Tarjetas de video").pack()
+    Label(frame5,text="Tarjetas de video").pack()
     for grafica in GPUs:
-        ttk.Checkbutton(frame4,text=grafica,variable=controlVars3[(grafica) + str(Recorredor3)],onvalue=1,offvalue=0).pack()
+        ttk.Checkbutton(frame5,text=grafica,variable=controlVars3[(grafica) + str(Recorredor3)],onvalue=1,offvalue=0).pack()
     
-    Label(frame5,text="Almacenameinto").pack()
+    Label(frame4,text="Almacenameinto").pack()
     for almacen in almacenamiento:
-        ttk.Checkbutton(frame5,text=almacen,variable=controlVars7[(almacen) + str(Recorredor7)],onvalue=1,offvalue=0).pack()
+        ttk.Checkbutton(frame4,text=almacen,variable=controlVars7[(almacen) + str(Recorredor7)],onvalue=1,offvalue=0).pack()
     
     Label(frame6,text="Fuentes de Poder").pack()
     for fuentes in fuentesDePoder:
@@ -274,6 +370,8 @@ def componentes():
     for caja in cases:
         ttk.Checkbutton(frame7,text=caja,variable=controlVars8[(caja) + str(Recorredor8)],onvalue=1,offvalue=0).pack()
     Button(frame8,text="Click para agregar calcular el costo de su producto",command=calculo).pack()
+
+
 #Boton de Calculo
 
 def calculo():
@@ -283,6 +381,7 @@ def calculo():
     newWindow6.geometry("500x500")
     global calculo
     total = 0
+    global valor1
     for i in controlVars:
         if controlVars[i].get() == 1:
             valor = Computadoras[i]
@@ -293,6 +392,7 @@ def calculo():
         if controlVars1[j].get() == 1:
             valor1 = procesadoresAMDryzen[j]
             Label(newWindow6,text=( str(j) + "=" + str(valor1))).pack()
+    
             total += valor1
     
     for k in controlVars2:
@@ -338,20 +438,13 @@ def calculo():
             valor8 = cases[b]
             Label(newWindow6,text=( str(b) + "=" + str(valor8))).pack()
             total += valor8
-    Label(newWindow6,text=("Total = " + str(total))).place(x=100,y=200)
-def computadorasarmadas():
-    newWindow10 = Toplevel(root)
-    newWindow10.title('Comptadoras Prearmadas')
-    newWindow10.geometry("1000x1000")
-    #frame10= Frame(newWindow10)
-    #frame10.grid(row=1,column=2)
-    for computador in Computadoras:
-    
-        ttk.Checkbutton(newWindow10,text=computador,variable=controlVars[(computador) + str(Recorredor)],onvalue=1,offvalue=0).pack()
-    Button(newWindow10,text="Click para agregar calcular el costo de su producto",command=calculo).pack()
+    Label(newWindow6,text=("Total = " + str(total))).pack()
+
+
 
 #Ventana de carrito de compras2 
 def carritocompras2(): 
+
     Label(newWindow6,text="Seleccione la cantidad").place(x=10,y=20)
     Label(newWindow6,text="El total es").place(x=30,y=90)
     Label(newWindow6,text="").pack()
@@ -379,9 +472,109 @@ def lema():
     Label(newWindow8,text ="Nuestro lema").pack() 
     Label(newWindow8, text="").pack()
 
+def registrodeInventario():
+    global newWindow11
+    newWindow11 = Toplevel(root)
+    newWindow11.title("Registro de inventario")
+    newWindow11.geometry("500x500")
+    Label(newWindow11,text="Ingrese un nuevo componente").grid(column=5,row=0)
+    Label(newWindow11,text="Nombre del producto").grid(column=5,row=5)
+    Label(newWindow11,text="Precio del producto").grid(column=5,row=6)
+    Label(newWindow11,text="¿Qué tipo de componente es?").grid(column=5,row=7)
+    global entrada1
+    global entrada2
+    global combo
+    Tipos = ["Procesador AMD",
+    "Procesador INTEL",
+    "Tarjeta madre",
+    "Tarjeta de Video",
+    "Tarjeta Ram",
+    "Fuentes de Poder",
+    "Almacenamiento","Cases"]
+    
+    validate_entry = lambda text: text.isdecimal()
+    entrada1 = Entry(newWindow11)
+    entrada1.grid(column=6,row=5)
+   
+    entrada2 = Entry(newWindow11,validate="key",
+    validatecommand=(root.register(validate_entry), "%S"))
+    entrada2.grid(column=6,row=6)
+   
+    combo = ttk.Combobox(newWindow11,state="readonly",values=Tipos)
+    combo.grid(column=6,row=7)
+    Button(newWindow11,text="Agregar producto",command=agregar).grid(column=6,row=8)
+
+
+    
+
+def agregar():
+    verificador = ["Desea añadir el siguiente producto?\n",
+    "Producto:",entrada1.get(),"\nprecio:",int(entrada2.get())]
+    if combo.get() == "Procesador AMD":
+        sms = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms ==True:
+            procesadoresAMDryzen[entrada1.get()] = int(entrada2.get())
+            controlVars1[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            
+        
+    if combo.get() == "Procesador INTEL":
+        sms1 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms1 == True:
+            procesadoresIntel[entrada1.get()] = int(entrada2.get())
+            controlVars2[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    elif combo.get() == "Tarjeta madre":
+        sms2 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms2 == True:
+            tarjetamother[entrada1.get()] = int(entrada2.get())
+            controlVars5[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    elif combo.get() == "Tarjeta de Video":
+        sms3 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms3 == True:
+            GPUs[entrada1.get()] = entrada2.get()
+            controlVars3[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    elif combo.get() == "Tarjeta Ram":
+        sms4 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms4 == True:
+            tarjetasRam[entrada1.get()] = int(entrada2.get())
+            controlVars4[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    elif combo.get() == "Fuentes de Poder":
+        sms5 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms5 == True:
+            fuentesDePoder[entrada1.get()] = int(entrada2.get())
+            controlVars6[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    elif combo.get() == "Almacenamiento":
+        sms6 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms6 == True:
+            almacenamiento[entrada1.get()] = int(entrada2.get())
+            controlVars7[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    elif combo.get() == "Cases":
+        sms7 = messagebox.askyesno(message=verificador,title="Verificación")
+        if sms7 == True:
+            cases[entrada1.get()] = int(entrada2.get())
+            controlVars8[entrada1.get()] = IntVar()
+            messagebox.showinfo(message="Producto agregado",title="Verificado")
+            newWindow11.destroy()
+    
+ 
+
+    
+
 #Menus principal
 filemenu = Menu(menubar,tearoff=0)
-filemenu.add_command(label="Computadoras Armadas",command=computadorasarmadas)
+filemenu.add_command(label="Computadoras Armadas",command=Computadoras)
 filemenu.add_command(label="Contacto y Ubicacion",command=ubicacion)
 filemenu.add_separator()
 filemenu.add_command(label="Salir", command=root.quit)
@@ -390,4 +583,9 @@ filemenu.add_command(label="Salir", command=root.quit)
 menubar.add_cascade(label="Menu",menu=filemenu)
 menubar.add_cascade(label="Componentes",command=componentes)
 menubar.add_cascade(label="Quienes Somos", command=lema)
+#BOTON Carrito de Compras
+
 root.mainloop()
+
+
+
