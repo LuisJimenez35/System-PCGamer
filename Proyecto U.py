@@ -60,24 +60,38 @@ def GuardarREgistro():
     print(usuario)
 
 def verifica_login():
+    global btm
     global sesionrol,sesionusuario
     encontro = False
     sesionusuario = ""
     sesionrol = ""
     for clave,valor in usuario.items():
+        
         if verificaUsuario.get() in clave and verificaclave.get() in valor:
+            roott = Tk()
+            roott.title("Esto es una prueba")
             sesionusuario = clave
             sesionrol = valor[1]
             encontro = True
+            clave = "supersistema"
+            Label(roott, text="Ingrese el codigo de moderador").grid(column=0,row=0)
+            btm = Entry(roott)
+            btm.grid(column=1,row=0)
+            btn = Button(roott,text="Click para verificar",command=verifica).grid()
             break
         else:
             encontro = False
     if encontro:
         messagebox.showinfo("","Logeo exitoso")
-        ventanaPanelAdminstrador(sesionusuario,sesionrol)
+        
     else:
         messagebox.showerror("","Usuario incorrrecto")
-
+clave = "supersistema"
+def verifica():
+    if btm.get() == clave:
+        ventanaPanelAdminstrador(sesionusuario,sesionrol)
+    else:
+        messagebox.showerror("","Sinceramente está mamando")
 #Ventana
 def ventanaPanelAdminstrador(dato1,dato2):
     ventananueva = Tk()
@@ -586,6 +600,7 @@ menubar.add_cascade(label="Quienes Somos", command=lema)
 #BOTON Carrito de Compras
 
 root.mainloop()
+
 
 
 
