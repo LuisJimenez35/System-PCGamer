@@ -1,5 +1,6 @@
-# Proyecto-1ercuatri-Intro-Porogra
-Proyecto 1erCuatri Luis,Bryan,Ale
+# System-PCGamer
+Primer Proyecto Universitario
+Proyecto Venta Gamer
 Pasos para lograr el proyecto
 
 Para iniciar a elaborar el proyecto comenzamos con la idea, pensamos en varias cosas pero desde el principio supimos que era lo que queríamos desarrollar, una tienda en línea con componentes de computadoras en el cual el cliente podría escoger entre una gran gama y variedad de productos, desde componentes hasta computadoras armadas y listas para usarse, con un sistema, que les calculara el precio de varias al mismo tiempo, claro esta idea paso por ciertos procesos antes de desarrollarse al 100%.
